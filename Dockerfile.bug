@@ -1,0 +1,10 @@
+# Bug image: the official nightly, which still has the bug, plus the read-only
+# diagnostic that logs whenever a request's cached context is dropped.
+#   docker build -f Dockerfile.bug -t pr59098:bug .
+ARG BASE=vllm/vllm-openai-rocm:nightly-rocm100-df6603f0583375f244d1ac6d36265462b7490392
+FROM ${BASE}
+COPY diag_pr59098.py /tmp/diag_pr59098.py
+RUN cd /usr/local/lib/python3.12/dist-packages \
+ && cat /tmp/diag_pr59098.py >> vllm/v1/attention/backends/utils.py \
+ && find vllm -name __pycache__ -type d -prune -exec rm -rf {} + \
+ && rm /tmp/diag_pr59098.py

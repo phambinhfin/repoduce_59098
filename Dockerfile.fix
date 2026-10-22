@@ -1,0 +1,12 @@
+# Fix image: the bug image plus one layer with the PR's source diff at its head,
+#   git diff 3d5f4d4cd5d8...bd2197772c00 -- vllm/
+#   docker build -f Dockerfile.fix -t pr59098:fix .
+# For a fix image without the diagnostic, start from the official image instead:
+#   --build-arg BASE=vllm/vllm-openai-rocm:nightly-rocm100-df6603f0583375f244d1ac6d36265462b7490392
+ARG BASE=pr59098:bug
+FROM ${BASE}
+COPY fix_branch.patch /tmp/fix_branch.patch
+RUN cd /usr/local/lib/python3.12/dist-packages \
+ && git apply -p1 --include='vllm/*' /tmp/fix_branch.patch \
+ && find vllm -name __pycache__ -type d -prune -exec rm -rf {} + \
+ && rm /tmp/fix_branch.patch

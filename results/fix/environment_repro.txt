@@ -1,0 +1,5 @@
+GPU 0: AMD Instinct MI325X
+image: vllm/vllm-openai-rocm:nightly-rocm100-df6603f0583375f244d1ac6d36265462b7490392 (sha256:81899892d73777a4ae81e16f39e749169687f29249505eb4c56da83bd097d41c)
+arm image: pr59098:fix (sha256:8abce3f28adf)
+model: Qwen/Qwen3-0.6B @ c1899de289a04d12100db370d81485cdf75e47ca
+date: 2026-10-22T20:09:11Z
